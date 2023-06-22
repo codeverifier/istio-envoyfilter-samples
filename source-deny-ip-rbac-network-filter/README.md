@@ -63,12 +63,13 @@ kubectl apply -f config/source-ip-deny-envoyfilter.yaml
     ```
 
     Packet capture output of the request being denied,
+    ![Screenshot 2023-06-22 at 14 20 52](https://github.com/pseudonator/useful-istio-envoyfilter-samples/assets/2648624/f4e5499e-3b0e-4e6e-b345-22747a560539)
+
+    Comparison with a working request,
+    ![Screenshot 2023-06-22 at 14 22 04](https://github.com/pseudonator/useful-istio-envoyfilter-samples/assets/2648624/39afa160-9420-4410-a4ac-0212e251c978)
 
 
-    Compare this is to a working request,
-
-
-2. Check if the stat counters have also changed for this particular RBAC policy.
+3. Check if the stat counters have also changed for this particular RBAC policy.
 
     ```
     kubectl exec deploy/istio-ingressgateway -n istio-system -- curl -s http://localhost:15000/stats | grep "source_ip_blocker"
