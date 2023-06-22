@@ -1,0 +1,36 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: igw-gateway
+  namespace: istio-config
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - hosts:
+        - "httpbin.test.com"
+      port:
+        number: 80
+        name: http
+        protocol: HTTP
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: httpbin-igw-vs
+  namespace: istio-config
+spec:
+  gateways:
+    - igw-gateway
+  hosts:
+    - "httpbin.test.com"
+  http:
+    - name: "httpbin-route"
+      match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: httpbin.httpbin.svc.cluster.local
+            port:
+              number: 8080
